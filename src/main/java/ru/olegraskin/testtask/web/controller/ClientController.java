@@ -39,7 +39,7 @@ public class ClientController {
     }
 
     @GetMapping("/{id}")
-    public ClientDTO get(@PathVariable("id") Long id) {
+    public ClientDTO get(@PathVariable("id") long id) {
         Client client = clientService.get(id);
         return clientMapper.convertToDTO(client);
     }

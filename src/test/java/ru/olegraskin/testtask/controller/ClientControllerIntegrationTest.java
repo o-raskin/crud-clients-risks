@@ -144,6 +144,16 @@ public class ClientControllerIntegrationTest {
     }
 
     @Test
+    public void testUpdate404() throws Exception {
+
+        ClientDTO dto = new ClientDTO();
+
+        mvc.perform(MockMvcRequestBuilders.put("/clients/{id}", "abc")
+                .contentType(MediaType.APPLICATION_JSON).content(toJSON(dto)))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
     public void testDelete200() throws Exception {
 
         Client client = new Client();
@@ -176,6 +186,13 @@ public class ClientControllerIntegrationTest {
     }
 
     @Test
+    public void testDelete400() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.delete("/clients/{id}", "abc")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
     public void testMergeRiskProfile200() throws Exception {
 
         Client client = new Client();
@@ -196,6 +213,19 @@ public class ClientControllerIntegrationTest {
                 .andExpect(jsonPath("$[1].riskProfile", is(client.getRiskProfile().name())))
                 .andExpect(jsonPath("$[0].id", is(client2.getId().intValue())))
                 .andExpect(jsonPath("$[0].riskProfile", is(client.getRiskProfile().name())));
+    }
+
+    @Test
+    public void testMergeRiskProfile200WithNullValues() throws Exception {
+
+        Client client = new Client();
+
+        Client client2 = new Client();
+
+        mvc.perform(MockMvcRequestBuilders.post("/clients/merge")
+                .contentType(MediaType.APPLICATION_JSON).content(toJSON(Arrays.asList(client, client2))))
+                .andExpect(status().isOk())
+                .andExpect(content().json("[]"));
     }
 
     private void addToRepository(Client client) {

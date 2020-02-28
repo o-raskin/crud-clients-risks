@@ -1,5 +1,6 @@
 package ru.olegraskin.testtask.service.impl;
 
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
@@ -24,7 +25,7 @@ public class ClientServiceImpl implements ClientService {
 
     @Cacheable
     @Override
-    public Client get(Long id) {
+    public Client get(long id) {
         Optional<Client> clientOptional = clientRepository.findById(id);
         return clientOptional.orElseThrow(() -> new ClientNotFoundException(id));
     }
@@ -36,12 +37,12 @@ public class ClientServiceImpl implements ClientService {
 
     @Transactional
     @Override
-    public Client save(Client client) {
+    public Client save(@NonNull Client client) {
         return clientRepository.save(client);
     }
 
     @CachePut(key = "#client.id")
-    public Client update(Client client) {
+    public Client update(@NonNull Client client) {
         Optional<Client> optionalClient = clientRepository.findById(client.getId());
         if (optionalClient.isPresent()) {
             Client stored = optionalClient.get();
@@ -55,7 +56,7 @@ public class ClientServiceImpl implements ClientService {
     @CacheEvict
     @Transactional
     @Override
-    public void delete(Long id) {
+    public void delete(long id) {
         Optional<Client> clientOptional = clientRepository.findById(id);
         if (clientOptional.isPresent()) {
             clientRepository.deleteById(id);
@@ -66,9 +67,10 @@ public class ClientServiceImpl implements ClientService {
 
     @Transactional
     @Override
-    public Set<Client> mergeRiskProfiles(Set<Client> clients) {
+    public Set<Client> mergeRiskProfiles(@NonNull Set<Client> clients) {
         List<Client> storedClients = clientRepository.findAllById(clients.stream()
                 .map(Client::getId)
+                .filter(Objects::nonNull)
                 .collect(Collectors.toSet()));
         Optional<Client.RiskProfile> maxRiskProfile = storedClients.stream()
                 .max(Comparator.comparing(Client::getRiskProfile))

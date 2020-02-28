@@ -2,20 +2,19 @@ package ru.olegraskin.testtask.service;
 
 import ru.olegraskin.testtask.domain.Client;
 
-import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 public interface ClientService {
 
-    Set<Client> mergeRiskProfiles(@NotNull Set<Client> ids);
+    Set<Client> mergeRiskProfiles(Set<Client> ids);
 
-    Client get(@NotNull Long id);
+    Client get(long id);
 
     Set<Client> getAll();
 
-    Client save(@NotNull Client client);
+    Client save(Client client);
 
-    Client update(@NotNull Client client);
+    Client update(Client client);
 
-    void delete(@NotNull Long id);
+    void delete(long id);
 }
