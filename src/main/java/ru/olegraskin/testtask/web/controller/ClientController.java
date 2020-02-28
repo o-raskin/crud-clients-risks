@@ -1,6 +1,7 @@
 package ru.olegraskin.testtask.web.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import ru.olegraskin.testtask.domain.Client;
 import ru.olegraskin.testtask.dto.ClientDTO;
@@ -13,7 +14,11 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/clients")
+@RequestMapping(
+        value = "/clients",
+        consumes = MediaType.APPLICATION_JSON_VALUE,
+        produces = MediaType.APPLICATION_JSON_VALUE
+)
 public class ClientController {
 
     private final ClientService clientService;

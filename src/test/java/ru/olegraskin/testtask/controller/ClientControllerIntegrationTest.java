@@ -54,6 +54,12 @@ public class ClientControllerIntegrationTest {
 
     @Test
     public void testGetClient400() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.get("/clients/{id}", "abc").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void testGetClient404() throws Exception {
         mvc.perform(MockMvcRequestBuilders.get("/clients/{id}", 1).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
@@ -148,7 +154,8 @@ public class ClientControllerIntegrationTest {
 
         int clientId = 1;
 
-        mvc.perform(MockMvcRequestBuilders.delete("/clients/{id}", clientId))
+        mvc.perform(MockMvcRequestBuilders.delete("/clients/{id}", clientId)
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 
@@ -163,7 +170,8 @@ public class ClientControllerIntegrationTest {
 
         int clientId = 3;
 
-        mvc.perform(MockMvcRequestBuilders.delete("/clients/{id}", clientId))
+        mvc.perform(MockMvcRequestBuilders.delete("/clients/{id}", clientId)
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
 
