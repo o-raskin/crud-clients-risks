@@ -1,4 +1,4 @@
-# Test task project
+# Client's risk project
 
 ##  Development
 To start application, run:
